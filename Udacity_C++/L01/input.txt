@@ -1,0 +1,7 @@
+One line in the file
+
+Another line in the file
+
+
+Adding a new line 
+Adding another new line

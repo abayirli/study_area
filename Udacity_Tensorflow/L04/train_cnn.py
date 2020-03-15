@@ -45,12 +45,15 @@ train_dataset = train_dataset.cache()
 test_dataset = test_dataset.cache()
 
 
-#define the model
-input_layer = keras.layers.Flatten(input_shape=(28,28,1))
-dense_layer =keras.layers.Dense(units = 128, activation = tf.nn.relu)
-output = keras.layers.Dense(10, activation=tf.nn.softmax)
+model = keras.Sequential([keras.layers.Conv2D(32, (3,3), padding = "same", activation = tf.nn.relu),
+						  keras.layers.MaxPooling2D((2,2), strides = 2),
+						  keras.layers.Conv2D(64, (3,3), padding = "same", activation =  tf.nn.relu),
+						  keras.layers.MaxPooling2D((2,2), strides = 2),
+						  keras.layers.Flatten(),
+						  keras.layers.Dense(units = 128, activation = tf.nn.relu),
+						  keras.layers.Dense(units = 10, activation = tf.nn.softmax)
+						  ])
 
-model = keras.Sequential([input_layer, dense_layer, output])
 model.compile(optimizer = "adam", loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=["accuracy"])
 
 BATCH_SIZE = 32
@@ -62,4 +65,4 @@ model.fit(train_dataset, epochs=10, steps_per_epoch=math.ceil(num_train_examples
 
 test_loss, test_accuracy = model.evaluate(test_dataset, steps=math.ceil(num_test_examples/BATCH_SIZE))
 
-print(f"Feed Forward NN - Accuracy on the test set: {test_accuracy}")
+print(f"CNN - Accuracy on the test set: {test_accuracy}")
